@@ -1,0 +1,15 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    eventmachine (1.2.7)
+    yajl-ruby (1.4.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  eventmachine
+  yajl-ruby
+
+BUNDLED WITH
+   2.1.4
