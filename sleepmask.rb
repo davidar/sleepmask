@@ -9,6 +9,7 @@ require 'rubygems'
 require 'yajl'
 require 'yajl/json_gem'
 require 'eventmachine'
+#require 'em/pure_ruby'
 require 'optparse'
 
 Encoding.default_external = Encoding::UTF_8
@@ -21,7 +22,7 @@ execpath = File.dirname(File.realdirpath(File.absolute_path(__FILE__)))
 # useful to allow an external configuration file for these, given the highly
 # restricted target audience, this has not been a significant hardship.
 $interpreters = {
-  :glulxe => File.join(execpath, '..', 'glulxe-dev-rem', 'glulxe'),
+  :glulxe => File.join(execpath, '..', 'glulxe', 'glulxe'),
   :bocfel => File.join(execpath, '..', 'bocfel-0.6.2', 'bocfel'),
   :git => File.join(execpath, '..', 'git-131', 'git'),
   :nitfol => File.join(execpath, '..', 'nitfol-0.5-rem', 'remnitfol'),
@@ -230,6 +231,7 @@ class RemHandler < EM::Connection
         :height => $options[:height]
       }
     }
+    puts "%% Sending init: #{init.to_json}" if $debug
     send_data(init.to_json)
   end
 
@@ -249,39 +251,15 @@ class RemHandler < EM::Connection
     sclose = ""
 
     case run[:style]
-    when "emphasized"
-      run[:style] = "em"
-    when "user1"
-      run[:style] = "u1"
-    when "user2"
-      run[:style] = "u2"
-    end
-
-    case run[:style]
     when "header"
-      if options[:solo]
-        sopen = "# "
-        sclose = ""
-      else
-        sopen = "<b>"
-        sclose = "</b>"
-      end
+      sopen = "**"
+      sclose = "**"
     when "subheader"
-      if options[:solo]
-        sopen = "## "
-        sclose = ""
-      else
-        sopen = "<i>"
-        sclose = "</i>"
-      end
+      sopen = "**"
+      sclose = "**"
     when "alert"
-      if options[:solo]
-        sopen = "** "
-        sclose = ""
-      else
-        sopen = "<strong>"
-        sopen = "</strong>"
-      end
+      sopen = "**"
+      sclose = "**"
     when "input"
       sopen = "\n> "
       sclose = "\n"
@@ -292,6 +270,15 @@ class RemHandler < EM::Connection
     when "preformatted"
       sopen = ""
       sclose = ""
+    when "emphasized"
+      sopen = "*"
+      sclose = "*"
+    when "user1"
+      sopen = "_"
+      sclose = "_"
+    when "user2"
+      sopen = "["
+      sclose = "]"
     else
       sopen = "<#{run[:style]}>"
       sclose = "</#{run[:style]}>"
@@ -351,7 +338,7 @@ class RemHandler < EM::Connection
     end
     if obj.has_key?(:input) && !obj.has_key?(:specialinput)
       @inputs = obj[:input]
-      puts "Inputs: #{@inputs.inspect}" if $debug
+      puts "%% Inputs: #{@inputs.inspect}" if $debug
       @remqueue.pop &@sendinput
     end
 
