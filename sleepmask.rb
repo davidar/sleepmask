@@ -22,23 +22,7 @@ execpath = File.dirname(File.realdirpath(File.absolute_path(__FILE__)))
 # useful to allow an external configuration file for these, given the highly
 # restricted target audience, this has not been a significant hardship.
 $interpreters = {
-  :glulxe => File.join(execpath, '..', 'glulxe', 'glulxe'),
-  :bocfel => File.join(execpath, '..', 'bocfel-0.6.2', 'bocfel'),
-  :git => File.join(execpath, '..', 'git-131', 'git'),
-  :nitfol => File.join(execpath, '..', 'nitfol-0.5-rem', 'remnitfol'),
-  :cheapglulxe => File.join(execpath, '..', 'git-131', 'git'),
-  # :cheapglulxe => File.join(execpath, '..', 'glulxe-dev-rem', 'glulxe'),
-  :olddebugcheapnitfol => File.join(execpath, '..', 'nitfol-0.5-rem', 'remnitfol') + " -i -no-spell",
-  :fizmo => File.join(execpath, '..', 'fizmo-rem', 'fizmo-glktermw', 'fizmo-glktermw'),
-  :fizmodev => File.join(execpath, '..', 'fizmo-rem-dev', 'fizmo-glktermw', 'fizmo-glktermw'),
-  :debugcheapnitfol => File.join(execpath, '..', 'fizmo-rem', 'fizmo-glktermw', 'fizmo-glktermw'),
-  #:debugcheapnitfol => File.join(execpath, '..', 'bocfel-0.6.2', 'bocfel'),
-  :cheaphe => File.join(execpath, '..', 'hugo-rem', 'glk', 'heglk'),
-  #:cheaptads => File.join(execpath, '..', 'floyd-tads-rem', 'build', 'linux.release', 'tads', 'tadsr'),
-  #:cheaptads => File.join(execpath, '..', 'garglk-read-only', 'build', 'linux.release', 'tads', 'tadsr'),
-  :cheaptads => File.join(execpath, '..', 'frobtads-git', 'frobglk') + " -d . -sd . ",
-  :debugcheaptads => File.join(execpath, '..', 'floyd-tads-rem', 'build', 'linux.debug', 'tads', 'tadsr'),
-  :frobglk => File.join(execpath, '..', 'frobtads-git', 'frobglk') + " -d . -sd . "
+  :glulxe => File.join(execpath, 'glulxe', 'glulxe'),
 }
 
 options = {}
@@ -49,7 +33,7 @@ optparse = OptionParser.new do |opts|
   options[:verbose] = false
   options[:width] = 70
   options[:height] = 24 
-  options[:interpreter] = :git
+  options[:interpreter] = :glulxe
 
   opts.on('-i', '--interpreter TERP', 'Interpreter') do |terp|
     if $interpreters.has_key? terp.to_sym
@@ -102,7 +86,7 @@ end
 
 gamefile = ARGV[0]
 gamepath = File.expand_path(gamefile)
-if !File.exists? gamepath
+if !File.exist? gamepath
   puts "%% No gamefile found: #{gamefile}"
   exit
 end

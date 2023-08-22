@@ -1,3 +1,9 @@
 [submodule "eventmachine"]
 	path = eventmachine
 	url = https://github.com/eventmachine/eventmachine
+[submodule "glulxe"]
+	path = glulxe
+	url = https://github.com/erkyrath/glulxe.git
+[submodule "remglk"]
+	path = remglk
+	url = https://github.com/erkyrath/remglk.git
